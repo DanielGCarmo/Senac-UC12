@@ -99,7 +99,7 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
         jLayeredPane1.add(jlTelefone);
         jlTelefone.setBounds(40, 180, 50, 30);
 
-        jlEmail1.setText("E-mal");
+        jlEmail1.setText("E-mail");
         jLayeredPane1.add(jlEmail1);
         jlEmail1.setBounds(40, 220, 90, 30);
         jLayeredPane1.add(jtEmail1);
