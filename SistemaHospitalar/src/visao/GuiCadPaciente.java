@@ -177,6 +177,20 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
             pac.setCpf(jtCpf.getText());
             pac.setRg(jtRG.getText());
 
+            // Verificação adicional no backend
+            if (!pac.getCpf().matches("\\d{11}")) {
+                throw new IllegalArgumentException("CPF deve ter 11 dígitos numéricos.");
+            }
+            if (!pac.getTelefone().matches("\\(\\d{2}\\) \\d{4}-\\d{4}")) {
+                throw new IllegalArgumentException("Telefone deve estar no formato (xx) xxxx-xxxx.");
+            }
+            if (!pac.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+                throw new IllegalArgumentException("E-mail deve estar no formato exemplo@dominio.com.");
+            }
+            if (!sdf.format(pac.getDataNascimento()).matches("\\d{2}/\\d{2}/\\d{4}")) {
+                throw new IllegalArgumentException("Data de Nascimento deve estar no formato dd/mm/aaaa.");
+            }
+
             // Verificando se um convênio foi selecionado no JComboBox
             if (!(jcConvenio.getSelectedIndex() != 0)) {
 
@@ -213,32 +227,49 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
     }// fecha método
 
     private boolean validarCamposObrigatorios() {
+        // Validação do Nome
         if (jtNome.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "O campo Nome é obrigatório.");
             return false;
         }
-        if (jtCpf.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "O campo CPF é obrigatório.");
+
+        // Validação do CPF
+        String cpf = jtCpf.getText().trim();
+        if (cpf.isEmpty() || !cpf.matches("\\d{11}")) {
+            JOptionPane.showMessageDialog(this, "O campo CPF é obrigatório e deve ter 11 dígitos numéricos.");
             return false;
         }
+
+        // Validação do RG
         if (jtRG.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "O campo RG é obrigatório.");
             return false;
         }
+
+        // Validação do Endereço
         if (jtEndereco.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "O campo Endereço é obrigatório.");
             return false;
         }
-        if (jtTelefone.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "O campo Telefone é obrigatório.");
+
+        // Validação do Telefone
+        String telefone = jtTelefone.getText().trim();
+        if (telefone.isEmpty() || !telefone.matches("\\(\\d{2}\\) \\d{5}-\\d{4}")) {
+            JOptionPane.showMessageDialog(this, "O campo Telefone é obrigatório e deve estar no formato (xx) xxxx-xxxx.");
             return false;
         }
-        if (jtEmail1.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "O campo E-mail é obrigatório.");
+
+        // Validação do E-mail
+        String email = jtEmail1.getText().trim();
+        if (email.isEmpty() || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            JOptionPane.showMessageDialog(this, "O campo E-mail é obrigatório e deve estar no formato exemplo@dominio.com.");
             return false;
         }
-        if (jtDataNasc.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "O campo Data de Nascimento é obrigatório.");
+
+        // Validação da Data de Nascimento
+        String dataNasc = jtDataNasc.getText().trim();
+        if (dataNasc.isEmpty() || !dataNasc.matches("\\d{2}/\\d{2}/\\d{4}")) {
+            JOptionPane.showMessageDialog(this, "O campo Data de Nascimento é obrigatório e deve estar no formato dd/mm/aaaa.");
             return false;
         }
         return true;
