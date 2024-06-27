@@ -1,4 +1,3 @@
-
 package visao;
 
 import dao.ConvenioDAO;
@@ -6,7 +5,6 @@ import dao.PacienteDAO;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-
 import modelo.Convenio;
 import modelo.Paciente;
 import servicos.ConvenioServicos;
@@ -163,6 +161,9 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
 
     private void cadastrar() {
         try {
+            if (!validarCamposObrigatorios()) {
+                return; // Se os campos obrigatórios não forem válidos, sai do método
+            }
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -177,7 +178,7 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
             pac.setRg(jtRG.getText());
 
             // Verificando se um convênio foi selecionado no JComboBox
-            if (!(jcConvenio.getSelectedIndex() == 0)) {
+            if (!(jcConvenio.getSelectedIndex() != 0)) {
 
                 // Obtendo o nome do convênio selecionado pelo usuário
                 String conv = jcConvenio.getSelectedItem().toString();
@@ -194,9 +195,10 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Selecione um produto");
+                return;
             } // fecha else
 
-           // Criando objeto PacienteDAO para cadastrar o paciente no banco de dados
+            // Criando objeto PacienteDAO para cadastrar o paciente no banco de dados
             PacienteDAO pacDAO = new PacienteDAO();
             pacDAO.cadastrarPaciente(pac);
 
@@ -210,14 +212,50 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
 
     }// fecha método
 
+    private boolean validarCamposObrigatorios() {
+        if (jtNome.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo Nome é obrigatório.");
+            return false;
+        }
+        if (jtCpf.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo CPF é obrigatório.");
+            return false;
+        }
+        if (jtRG.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo RG é obrigatório.");
+            return false;
+        }
+        if (jtEndereco.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo Endereço é obrigatório.");
+            return false;
+        }
+        if (jtTelefone.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo Telefone é obrigatório.");
+            return false;
+        }
+        if (jtEmail1.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo E-mail é obrigatório.");
+            return false;
+        }
+        if (jtDataNasc.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo Data de Nascimento é obrigatório.");
+            return false;
+        }
+        return true;
+    }
+
     //apaga valores dos campos
     private void limpar() {
         jtNome.setText("");
         jtEndereco.setText("");
         jtCpf.setText("");
+        jtRG.setText("");
+        jtTelefone.setText("");
+        jtEmail1.setText("");
+        jtDataNasc.setText("");
+        jcConvenio.setSelectedIndex(0);
     }// fecha método
 
-    
     // metodo para preencher o combo box com os produtos cadastrados no banco de dados
     private void preencherCombo() {
         try {

@@ -1,10 +1,8 @@
-
 package visao;
 
 import java.awt.Image;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
-
 
 public class Menu extends javax.swing.JFrame {
 
